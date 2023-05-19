@@ -1,0 +1,990 @@
+#:kivy 2.1.0
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+#:import utils kivy.utils
+
+<WindowManager>:
+    id:WindowManager
+    transition:NoTransition()
+    loginwindow:loginwindow
+    chatwindow:chatwindow
+    signupwindow:signupwindow
+
+    LoginWindow:
+        id: loginwindow
+        name: "loginwindow"
+        manager: WindowManager
+
+    ChooseIpWindow:
+        id: chooseipwindow
+        name: "chooseipwindow"
+        manager: WindowManager
+
+    FileChooseWindow:
+        id: filechoosewindow
+        name: "filechoosewindow"
+        manager: WindowManager
+
+    ChatWindow:
+        id: chatwindow
+        name: "chatwindow"
+        manager: WindowManager
+
+    ChatListWindow:
+        id: chatlistwindow
+        name: "chatlistwindow"
+        manager: WindowManager
+
+    FriendListWindow:
+        id: friendlistwindow
+        name: "friendlistwindow"
+        manager: WindowManager
+    
+    AddFriendWindow:
+        id: addfriendwindow
+        name: "addfriendwindow"
+        manager: WindowManager
+
+    SignupWindow:
+        id: signupwindow
+        name: "signupwindow"
+        manager: WindowManager
+
+<ChooseIpWindow>:
+    ip_input:ip_input
+    port_input:port_input
+    inside_grid:inside_grid
+    error_hint:error_hint
+    GridLayout:
+        cols:1
+        spacing : 10
+        size_hint : 0.6, None
+        x : 0.2 * root.width
+        y : 0.55 * root.height
+
+        Image:
+            source:"image/line1.png"
+            size_hint : 1, None
+            center_x : self.parent.center_x
+            allow_stretch : True
+            keep_ratio : True
+
+        GridLayout:
+            cols:2
+            size_hint:(1, None)
+            height:45
+            center_x : root.width * 0.5
+            center_y : root.height * 0.5
+            TextInput:
+                id:ip_input
+                size_hint:(None, None)
+                width:self.parent.width * 0.7
+                height:45
+                multiline:False
+                padding_y:(13, 13)
+                font_size:15
+                hint_text:"ip address"
+                background_color:(1, 1, 1, 1)
+                background_normal:""
+                on_text_validate:root.send_call_back()
+                valign: 'middle'
+            TextInput:
+                id:port_input
+                size_hint:(None, None)
+                width:self.parent.width * 0.3
+                height:45
+                multiline:False
+                padding_y:(13, 13)
+                font_size:15
+                hint_text:"port"
+                background_color:(1, 1, 1, 1)
+                background_normal:""
+                on_text_validate:root.send_call_back()
+                valign: 'middle'
+
+        GridLayout:
+            id : inside_grid
+            cols : 1
+            size_hint : (1, None)
+            spacing : 0
+            size_hint : 0.6, None
+            height:45
+            center_x : root.width * 0.5
+            center_y : root.height * 0.5
+
+            Label:
+                id:error_hint
+                text:""
+                size_hint:(1, None)
+                height:0
+
+            Button:
+                text:"Send"
+                size_hint:(1, None)
+                height:45
+                bold:True
+                font_size:18
+                background_color:"#00B800"
+                background_normal:""
+                on_release:root.send_call_back()
+
+
+<FileChooseWindow>:
+    image:image
+    error_hint:error_hint
+    filechooser:filechooser
+    GridLayout:
+        cols : 1
+        size_hint : 0.8, 0.1
+        x : 0.1 * root.width
+        y : 0.8 * root.height
+
+        Button:
+            size_hint:(None,None)
+            width:30
+            height:30
+            on_release: root.return_call_back()
+
+            Image:
+                source:"image/return_button.jpg"
+                size_hint:(None,None)
+                width:30
+                height:30
+                center_x:self.parent.center_x
+                center_y:self.parent.center_y
+    BoxLayout:
+        orientation:"vertical"
+        size:root.width,root.height
+        size_hint:1,0.8
+        padding:50
+        spacing:20
+        y:0.1 * root.height
+
+        Image:
+            id:image
+            source:""
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+        FileChooserIconView:
+            id: filechooser
+            on_selection:root.selected(filechooser.selection)
+    
+    Button:
+        size_hint:None,None
+        size:100, 50
+        pos_hint:{'right':0.9,'top':0.15}
+        background_color: 0,0,0,0
+        text:"confirm"
+        on_release: root.confirm_button()
+        canvas.before:
+            Color:
+                rgba: (7/255, 181/255, 59/255, 1)
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [50,]
+    
+    Label:
+        id:error_hint
+        size_hint:None,None
+        size:100, 50
+        pos_hint:{'right':0.6,'top':0.15}
+        background_color: 0,0,0,0
+        text:""
+
+
+<AddFriendWindow>:
+    send_input:send_input
+    inside_grid:inside_grid
+    error_hint:error_hint
+    GridLayout:
+        cols : 1
+        size_hint : 0.8, 0.1
+        x : 0.1 * root.width
+        y : 0.8 * root.height
+
+        Button:
+            size_hint:(None,None)
+            width:30
+            height:30
+            on_release: root.return_call_back()
+
+            Image:
+                source:"image/return_button.jpg"
+                size_hint:(None,None)
+                width:30
+                height:30
+                center_x:self.parent.center_x
+                center_y:self.parent.center_y
+
+    GridLayout:
+        cols:1
+        spacing : 10
+        size_hint : 0.6, None
+        x : 0.2 * root.width
+        y : 0.5 * root.height
+
+        TextInput:
+            id:send_input
+            size_hint:(1, None)
+            height:45
+            multiline:False
+            padding_y:(13, 13)
+            font_size:15
+            hint_text:"please input friend's username to add friend"
+            background_color:(1, 1, 1, 1)
+            background_normal:""
+            on_text_validate:root.send_call_back()
+            valign: 'middle'
+
+        GridLayout:
+            id : inside_grid
+            cols : 1
+            size_hint : (1, None)
+            spacing : 0
+            size_hint : 0.6, None
+            height:45
+            center_x : root.width * 0.5
+            center_y : root.height * 0.5
+
+            Label:
+                id:error_hint
+                text:""
+                size_hint:(1, None)
+                height:0
+
+            Button:
+                text:"Send"
+                size_hint:(1, None)
+                height:45
+                bold:True
+                font_size:18
+                background_color:"#00B800"
+                background_normal:""
+                on_release:root.send_call_back()
+
+<FriendListWidget>:
+    height:60
+    size_hint:0.8,None
+    title:title
+    time:time
+    background_normal:""
+    background_color:0,0,0,0
+    x : 0.1 * root.width
+    on_release:root.press_call_back()
+    canvas.before:
+        Color:
+            rgba: .5, .5, .5, 1
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+
+    FloatLayout:
+        size:self.parent.size
+        height:60
+        center_x:self.parent.center_x
+        center_y:self.parent.center_y
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint:None,None
+            size:self.parent.width*0.7,60
+            spacing:0
+            x:self.parent.x
+            center_y:self.parent.center_y
+            
+            Label:
+                id:title
+                size : self.parent.width, 60
+                pos_hint:{"left":1}
+
+                height:20
+                color : 0, 0, 0, 1
+                halign : "left"
+
+        BoxLayout:
+            orientation: 'vertical'
+            size : self.parent.width * 0.3, 60
+            x : self.parent.x + self.parent.width * 0.3
+            center_y:self.parent.center_y
+            Label:
+                id:time
+                size : self.parent.width, 60
+                height:60
+                color : 119/255, 119/255, 119/255, 1
+                halign : "center"
+
+<FriendListWindow>:
+    scroll_grid:scroll_grid
+    
+    GridLayout:
+        cols : 1
+        size_hint : 0.8, 0.1
+        x : 0.8 * root.width
+        y : 0.85 * root.height
+
+        Button:
+            size_hint:(None,None)
+            width:30
+            height:30
+            on_release: root.add_friend_button()
+            background_normal:""
+
+            Image:
+                source:"image/add_friend.png"
+                size_hint:(None,None)
+                width:30
+                height:30
+                center_x:self.parent.center_x
+                center_y:self.parent.center_y
+
+    GridLayout:
+        cols:1
+        spacing : 10
+        size_hint : 0.8, 0.8
+        x : 0.1 * root.width
+        y : 0.08 * root.height
+
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint: 1, 1
+
+            GridLayout:
+                id:scroll_grid
+                cols:1
+                spacing : 5
+                size_hint:1,None
+                height: self.minimum_height + 10
+                padding:(0,10,0,0)
+
+        GridLayout:
+            cols:2
+            spacing : 1
+            size_hint : 1, 0.1
+            x:self.parent.x
+            canvas.before:
+                Color:
+                    rgb: utils.get_color_from_hex("#2A334A")
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Button:
+                size_hint:(1,1)
+                background_normal:""
+                center_x:self.parent.center_x
+                center_y:self.parent.center_y
+                on_release: root.chat_button()
+                Image:
+                    source:"image/chat.png"
+                    size_hint:(None,None)
+                    size:30,30
+                    allow_stretch : True
+                    keep_ratio : False
+                    center_x:self.parent.center_x
+                    center_y:self.parent.center_y
+        
+            Button:
+                size_hint:(1,1)
+                background_normal:""
+                center_x:self.parent.center_x
+                center_y:self.parent.center_y
+                # on_release: root.friend_button()
+                Image:
+                    source:"image/friends.png"
+                    size_hint:(None,None)
+                    size:30,30
+                    allow_stretch : True
+                    keep_ratio : False
+                    center_x:self.parent.center_x
+                    center_y:self.parent.center_y
+
+<Image_from>:
+    anchor_x: 'left'
+    message_image:message_image
+    size_hint:0.3,None
+    # width: self.message_image.width
+    height: self.ids.message_image.height
+    
+    Image:
+        id:message_image
+        size_hint:(None,None)
+        height:80
+        allow_stretch : True
+        keep_ratio : True
+        
+        
+
+<Image_to>:
+    anchor_x: 'right'
+    message_image:message_image
+    size_hint:0.3, None
+    height: self.ids.message_image.height
+    
+    Image:
+        id:message_image
+        size_hint:(None,None)
+        height:80
+        allow_stretch : True
+        keep_ratio : True
+
+
+<Message_from>:
+    anchor_x: 'left'
+    message_label:message_label
+    size_hint:1,None
+    # width: self.ids.message_label.width
+    height: self.ids.message_label.height
+    Label:
+        id:message_label
+        canvas.before:
+            Color:
+                rgb: 195/255, 246/255, 157/255
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        color: 31/255, 31/255, 31/255, 1
+        size_hint_x: 0.7
+        text_size: self.width, None
+        height: self.texture_size[1]
+        size_hint_y: None
+        padding: 10,6
+
+<Message_to>:
+    anchor_x: 'right'
+    message_label:message_label
+    size_hint:1,None
+    # width: self.ids.message_label.width
+    height: self.ids.message_label.height
+    Label:
+        id:message_label
+        canvas.before:
+            Color:
+                rgb: 195/255, 246/255, 157/255
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        color: 31/255, 31/255, 31/255, 1
+        size_hint_x: 0.7
+        text_size: self.width, None
+        height: self.texture_size[1]
+        size_hint_y: None
+        padding: 10,8
+
+<Time>:
+    color:"#8A8D91"
+    size_hint: 1, None
+    height:20
+
+<ChatWindow>:
+    scroll_grid:scroll_grid
+    scroll:scroll
+    image:image
+    cancel_button:cancel_button
+    cancel_button_image:cancel_button_image
+    image_layout:image_layout
+    send_input:send_input
+    GridLayout:
+        cols : 1
+        size_hint : 0.8, 0.1
+        x : 0.1 * root.width
+        y : 0.8 * root.height
+
+        Button:
+            size_hint:(None,None)
+            width:30
+            height:30
+            on_release: root.return_call_back()
+
+            Image:
+                source:"image/return_button.jpg"
+                size_hint:(None,None)
+                width:30
+                height:30
+                center_x:self.parent.center_x
+                center_y:self.parent.center_y
+
+    GridLayout:
+        cols:1
+        spacing : 5
+        size_hint : 0.8, 0.75
+        x : 0.1 * root.width
+        y : 0.1 * root.height
+        
+        ScrollView:
+            id:scroll
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint: 1, 1            
+
+            canvas.before:
+                Color:
+                    rgba: .5, .5, .5, 1
+                Line:
+                    width: 1
+                    rectangle: self.x, self.y, self.width, self.height
+
+            GridLayout:
+                id:scroll_grid
+                cols:1
+                spacing : 5
+                size_hint : 1, None
+                x : 0.2 * root.width
+                height: self.minimum_height + 10
+                
+    
+        GridLayout:
+            id:image_layout
+            cols : 2
+            size_hint : 1, None
+            height:0
+
+            Image:
+                id:image
+                size_hint:(None,None)
+                size:0,0
+                pos_hint:{'left':0.1}
+                allow_stretch : True
+                keep_ratio : True
+                center_x:self.parent.center_x
+                center_y:self.parent.center_y
+
+            Button:
+                id:cancel_button
+                size_hint:(None,None)
+                size:0,0
+                background_normal:""
+                background_color:(0,0,0,0)
+                center_x:self.parent.center_x
+                center_y:self.parent.center_y
+                on_release: root.cancel_button_call_back()
+
+                Image:
+                    id:cancel_button_image    
+                    source:"image/cancel.png"
+                    size_hint:(None,None)
+                    size:0,0
+                    allow_stretch : True
+                    keep_ratio : False
+                    center_x:self.parent.center_x
+                    center_y:self.parent.center_y
+            
+            
+        FloatLayout:
+            cols : 1
+            size_hint : 0.6, 0.15
+            x : 0.2 * root.width
+            y : 0.85 * root.height
+
+            canvas.before:
+                Color:
+                    rgba: .5, .5, .5, 1
+                Line:
+                    width: 1
+                    rectangle: self.x, self.y, self.width, self.height
+            
+            Button:
+                size_hint:None,None
+                background_normal:""
+                size:0.1*self.parent.width,self.parent.height
+                x:self.parent.x
+                y:self.parent.y
+                on_release: root.image_call_back()
+                Image:
+                    source:"image/image.png"
+                    size_hint:(None,None)
+                    size:30,30
+                    allow_stretch : True
+                    keep_ratio : False
+                    center_x:self.parent.center_x
+                    center_y:self.parent.center_y
+
+            TextInput:
+                id:send_input
+                size_hint:None,None
+                size:0.8*self.parent.width,self.parent.height
+                x:self.parent.x+0.1*self.parent.width
+                y:self.parent.y
+                multiline:False
+                padding_y:(13, 13)
+                height:45
+                font_size:14
+                hint_text:"input message"
+                background_color:(1, 1, 1, 1)
+                background_normal:""
+                on_text_validate:root.send_call_back()
+                canvas.before:
+                    Color:
+                        rgba: .5, .5, .5, 1
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+            Button:
+                size_hint:None,None
+                background_normal:""
+                size:0.1*self.parent.width,self.parent.height
+                x:self.parent.x+0.9*self.parent.width
+                y:self.parent.y
+                on_release: root.send_call_back()
+                Image:
+                    source:"image/send.png"
+                    size_hint:(None,None)
+                    size:30,30
+                    allow_stretch : True
+                    keep_ratio : False
+                    center_x:self.parent.center_x
+                    center_y:self.parent.center_y
+
+<ChatListWidget>:
+    height:60
+    size_hint:0.8,None
+    title:title
+    message:message
+    time:time
+    background_normal:""
+    background_color:0,0,0,0
+    x : 0.1 * root.width
+    on_release:root.press_call_back()
+    canvas.before:
+        Color:
+            rgba: .5, .5, .5, 1
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+
+    FloatLayout:
+        size:self.parent.size
+        height:60
+        center_x:self.parent.center_x
+        center_y:self.parent.center_y
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint:None,None
+            size:self.parent.width*0.7,60
+            spacing:0
+            x:self.parent.x
+            center_y:self.parent.center_y
+            
+            Label:
+                id:title
+                size : self.parent.width, 20
+                pos_hint:{"left":1}
+
+                height:30
+                color : 0, 0, 0, 1
+                halign : "left"
+            Label:
+                id:message
+                size_hint:None,None
+                size : self.parent.width, 30
+                color : 119/255, 119/255, 119/255, 1
+                text_size: (self.width*0.8, None)
+                halign : "center"
+                valign : "center"
+                shorten: True
+                shorten_from: "right"
+        BoxLayout:
+            orientation: 'vertical'
+            size : self.parent.width * 0.3, 60
+            x : self.parent.x + self.parent.width * 0.3
+            center_y:self.parent.center_y
+            Label:
+                id:time
+                size : self.parent.width, 60
+                height:60
+                color : 119/255, 119/255, 119/255, 1
+                halign : "center"
+
+
+
+<ChatListWindow>:
+    scroll_grid:scroll_grid
+    
+    GridLayout:
+        cols:1
+        spacing : 10
+        size_hint : 0.8, 0.8
+        x : 0.1 * root.width
+        y : 0.08 * root.height
+
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint: 1, 1
+
+            GridLayout:
+                id:scroll_grid
+                cols:1
+                spacing : 5
+                size_hint:1,None
+                height: self.minimum_height + 10
+                padding:(0,10,0,0)
+
+        GridLayout:
+            cols:2
+            spacing : 1
+            size_hint : 1, 0.1
+            x:self.parent.x
+            canvas.before:
+                Color:
+                    rgb: utils.get_color_from_hex("#2A334A")
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Button:
+                size_hint:(1,1)
+                background_normal:""
+                center_x:self.parent.center_x
+                center_y:self.parent.center_y
+
+                # on_release: root.chat_button()
+                Image:
+                    source:"image/chat.png"
+                    size_hint:(None,None)
+                    size:30,30
+                    allow_stretch : True
+                    keep_ratio : False
+                    center_x:self.parent.center_x
+                    center_y:self.parent.center_y
+        
+            Button:
+                size_hint:(1,1)
+                background_normal:""
+                center_x:self.parent.center_x
+                center_y:self.parent.center_y
+                on_release: root.friend_button()
+                Image:
+                    source:"image/friends.png"
+                    size_hint:(None,None)
+                    size:30,30
+                    allow_stretch : True
+                    keep_ratio : False
+                    center_x:self.parent.center_x
+                    center_y:self.parent.center_y
+
+  
+<LoginWindow>:
+    account:account
+    password:password
+    inside_grid:inside_grid
+    error_hint:error_hint
+
+    GridLayout:
+        cols : 1
+        spacing : 20
+        size_hint : 0.6, 0.7
+        x : 0.2 * root.width
+        y : 0.16 * root.height
+
+        Image:
+            source:"image/line1.png"
+            size_hint:(1,1)
+
+        TextInput:
+            id:account
+            multiline:False
+            write_tab:False
+            padding_y:(13, 13)
+            size_hint:(1, None)
+            height:45
+            font_size:14
+            hint_text:"Username or E-mail"
+            background_color:(1, 1, 1, 1)
+            background_normal:""
+            on_text_validate:root.enter_call_back()
+
+        TextInput:
+            id:password
+            multiline:False
+            write_tab:False
+            padding_y:(13, 13)
+            size_hint:(1, None)
+            height:45
+            font_size:14
+            hint_text:"Password"
+            background_color:(1, 1, 1, 1)
+            background_normal:""
+            password : True
+            on_text_validate:root.enter_call_back()
+        
+        GridLayout:
+            id : inside_grid
+            cols : 1
+            size_hint : (1, None)
+            spacing : 0
+            size_hint : 0.6, None
+            height:45
+            center_x : root.width * 0.5
+            center_y : root.height * 0.5
+
+            Label:
+                id:error_hint
+                text:""
+                size_hint:(1, None)
+                height:0
+
+            Button:
+                text:"login"
+                size_hint:(1, None)
+                height:45
+                bold:True
+                font_size:18
+                background_color:"#00B800"
+                background_normal:""
+                on_release: root.login_call_back()
+
+        GridLayout:
+            cols : 2
+            size_hint : (1, None)
+            height:45
+            spacing : 100
+            size_hint : 0.6, 0.7
+            center_x : root.width * 0.5
+            center_y : root.height * 0.5
+
+            Button:
+                color:(0,0,0,1)
+                size_hint:(1, None)
+                height:45
+                font_size:13
+                text:"choose ip page"
+                background_normal:""
+                halign : "center"
+                on_release: root.choose_ip_call_back()
+
+            Button:
+                text:"signup"
+                color:(0,0,0,1)
+                size_hint:(1, None)
+                height:45
+                font_size:13
+                background_normal:""
+                halign : "center"
+                on_release: root.signup_call_back()
+                
+
+
+<SignupWindow>:
+    username:username
+    password:password
+    confirm_password:confirm_password
+    email:email
+    inside_grid:inside_grid
+    error_hint:error_hint
+    GridLayout:
+        cols : 1
+        size_hint : 0.6, 0.1
+        x : 0.2 * root.width
+        y : 0.8 * root.height
+        Button:
+            size_hint:None,None
+            halign:"left"
+            width:30
+            height:30
+            on_release:root.return_call_back()
+
+            Image:
+                source:"image/return_button.jpg"
+                size_hint:(None,None)
+                width:30
+                height:30
+                center_x:self.parent.center_x
+                center_y:self.parent.center_y
+
+    GridLayout:
+        cols : 1
+        spacing : 20
+        size_hint : 0.6, 0.7
+        x : 0.2 * root.width
+        y : 0.16 * root.height
+
+        Image:
+            source:"image/line1.png"
+            size_hint:(1,1)
+
+        TextInput:
+            id:username
+            multiline:False
+            write_tab:False
+            padding_y:(13, 13)
+            size_hint:(1, None)
+            height:45
+            font_size:14
+            hint_text:"Username"
+            background_color:(1, 1, 1, 1)
+            background_normal:""
+            on_text_validate:root.enter_call_back()
+
+        TextInput:
+            id:password
+            multiline:False
+            write_tab:False
+            padding_y:(13, 13)
+            size_hint:(1, None)
+            height:45
+            font_size:14
+            hint_text:"Password"
+            background_color:(1, 1, 1, 1)
+            background_normal:""
+            password : True
+            on_text_validate:root.enter_call_back()
+
+        TextInput:
+            id:confirm_password
+            multiline:False
+            write_tab:False
+            padding_y:(13, 13)
+            size_hint:(1, None)
+            height:45
+            font_size:14
+            hint_text:"Confirm password"
+            background_color:(1, 1, 1, 1)
+            background_normal:""
+            password : True
+            on_text_validate:root.enter_call_back()
+        
+        TextInput:
+            id:email
+            multiline:False
+            write_tab:False
+            padding_y:(13, 13)
+            size_hint:(1, None)
+            height:45
+            font_size:14
+            hint_text:"Email Address"
+            background_color:(1, 1, 1, 1)
+            background_normal:""
+            on_text_validate:root.enter_call_back()
+
+        GridLayout:
+            id : inside_grid
+            cols : 1
+            size_hint : (1, None)
+            spacing : 0
+            size_hint : 0.6, None
+            height:45
+            center_x : root.width * 0.5
+            center_y : root.height * 0.5
+
+            Label:
+                id:error_hint
+                text:""
+                size_hint:(1, None)
+                height:0
+
+            Button:
+                text:"submit"
+                size_hint:(1, None)
+                height:45
+                bold:True
+                font_size:18
+                background_color:"#00B800"
+                background_normal:""
+                on_release:root.signup_call_back()
